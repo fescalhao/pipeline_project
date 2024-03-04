@@ -59,5 +59,4 @@ spec:
       - name: "spark-apps"
         mountPath: "/tmp/spark_apps"
   arguments:
-
   timeToLiveSeconds: 120
