@@ -59,16 +59,5 @@ spec:
       - name: "spark-apps"
         mountPath: "/tmp/spark_apps"
   arguments:
-    - "--project"
-    - "movies"
-    - "--layer"
-    - "silver"
-    - "--entity"
-    - "ratings"
-    - "--aws_user_access_key"
-    - "AKIA2VQHSKWUUU3TFMFD"
-    - "--aws_user_secret_key"
-    - "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"
-    - "--aws_assume_role_arn"
-    - "arn:aws:iam::733381547433:role/MoviesProjectRole"
+
   timeToLiveSeconds: 120
