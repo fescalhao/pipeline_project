@@ -15,7 +15,7 @@ with DAG(
     tags=["movies_project"]
 ) as dag:
 
-    file = f'{pathlib.Path(__file__).parent.resolve()}/spark-py.yaml'
+    file = f'{pathlib.Path(__file__).parent.resolve()}/spark-pi.yaml'
     spark_template_spec = yaml.safe_load(open(file))
 
     spark_pi = SparkKubernetesOperator(
