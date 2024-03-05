@@ -28,8 +28,7 @@ with DAG(
         app_template = build_spark_app_template(app_json_template, spark_args, app_name)
 
         SparkKubernetesOperator(
-            task_id="spark_movies_task",
-            name="spark_pi",
+            task_id=f"spark_movies_{movies_silver_var.get('layer')}_{movies_silver_var.get('entity')}task",
             namespace="default",
             kubernetes_conn_id="k8s_conn",
             template_spec=app_template,
