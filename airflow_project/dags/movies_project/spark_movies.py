@@ -3,7 +3,7 @@ import pendulum
 from airflow import DAG
 from airflow.models import Variable
 from airflow.providers.cncf.kubernetes.operators.spark_kubernetes import SparkKubernetesOperator
-from airflow_project.dags.utils.spark_app_template.builder import build_spark_app_template
+from dags.utils.spark_app_template.builder import build_spark_app_template
 from movie_utils import get_spark_arguments
 
 with DAG(
