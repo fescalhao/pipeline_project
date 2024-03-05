@@ -15,7 +15,8 @@ with DAG(
     tags=["spark_pi"]
 ) as dag:
 
-    file = f'{pathlib.Path(__file__).parent.resolve()}/spark-py-pi.yaml'
+    file = f'{pathlib.Path().resolve()}/airflow/dags/spark-py-pi.yaml'
+    print(file)
     spark_template_spec = yaml.safe_load(open(file))
 
     spark_pi = SparkKubernetesOperator(

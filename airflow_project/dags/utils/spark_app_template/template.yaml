@@ -1,0 +1,55 @@
+apiVersion: "sparkoperator.k8s.io/v1beta2"
+kind: SparkApplication
+metadata:
+  name: {{ metadata.app_name }}
+  namespace: {{ metadata.namespace | default("default")}}
+spec:
+  type: {{ spec.type }}
+  {% if spec.type == "Python" -%}
+  pythonVersion: "{{  spec.python_version | default('3') -}}"
+  {% endif -%}
+  mode: {{ spec.mode | default("cluster") }}
+  image: {{ spec.image }}
+  imagePullPolicy: {{ spec.image_pull_policy }}
+  mainClass: {{ spec.main_class }}
+  mainApplicationFile: "{{ spec.main_application_file }}"
+  sparkVersion: "{{ spec.spark_version }}"
+  volumes:
+    - name: "spark-apps"
+      persistentVolumeClaim:
+        claimName: spark-apps-pvc
+  restartPolicy:
+    type: "{{ spec.restart_policy.type | default("OnFailure") }}"
+    onFailureRetries: {{ spec.restart_policy.on_failure_retries | default("3") }}
+    onFailureRetryInterval: {{ spec.restart_policy.on_failure_retry_interval | default("10") }}
+    onSubmissionFailureRetries: {{ spec.restart_policy.on_submission_failure_retries | default("5") }}
+    onSubmissionFailureRetryInterval: {{ spec.restart_policy.on_submission_failure_retry_interval | default("20") }}
+  driver:
+    cores: {{ spec.driver.cores | default("1") }}
+    coreLimit: "{{ spec.driver.coreLimit | default("1200m") }}"
+    memory: "{{ spec.driver.memory | default("512m") }}"
+    labels:
+    {% for k, v in spec.driver.labels.items() -%}
+    {{''}}  {{ k }}: "{{ v }}"
+    {% endfor -%}
+    serviceAccount: {{ spec.driver.service_account }}
+    volumeMounts:
+      - name: "spark-apps"
+        mountPath: "/tmp/spark_apps"
+  executor:
+    cores: {{ spec.executor.cores | default("1") }}
+    instances: {{ spec.executor.instances | default("1") }}
+    memory: "{{ spec.executor.memory | default("512m") }}"
+    labels:
+    {% for k, v in spec.executor.labels.items() -%}
+    {{ '' }}  {{ k }}: "{{ v }}"
+    {% endfor -%}
+    volumeMounts:
+      - name: "spark-apps"
+        mountPath: "/tmp/spark_apps"
+  arguments:
+  {% for k, v in spec.arguments.items() -%}
+  {{ '  - "' }}{{ k }}"
+  {{ '  - "' }}{{ v }}"
+  {% endfor -%}
+  timeToLiveSeconds: {{ spec.time_to_live_seconds | default("120") }}
