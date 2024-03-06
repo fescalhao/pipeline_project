@@ -49,7 +49,7 @@ spec:
         mountPath: "/tmp/spark_apps"
   arguments:
   {% for k, v in spec.arguments.items() -%}
-  {{ '  - "' }}{{ k }}"
+  {{ '  - "--' }}{{ k }}"
   {{ '  - "' }}{{ v }}"
   {% endfor -%}
   timeToLiveSeconds: {{ spec.time_to_live_seconds | default("120") }}
